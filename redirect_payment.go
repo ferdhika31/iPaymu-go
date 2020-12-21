@@ -1,4 +1,4 @@
-package iPaymu
+package ipaymu
 
 type RedirectPayment struct {
 	Config   Config

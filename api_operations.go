@@ -1,4 +1,4 @@
-package iPaymu
+package ipaymu
 
 import (
 	"bytes"
