@@ -19,7 +19,8 @@ func redirPayment() {
 	cfg.CancelUrl = "http://localhost:8000/cancel"
 	rp := ipaymu.RedirectPayment{Config: cfg}
 	// optional
-	rp.SetCustomer(ipaymu.Customer{Name: "Ferdhika", Phone: "08392313213", Email: "fer@dika.web.id"})
+	var c = ipaymu.NewCustomer("Ferdhika", "08313213131", "fer@dika.web.id")
+	rp.SetCustomer(c)
 	// mandatory
 	rp.AddProduct(ipaymu.Product{Name: "Pot Kayu", Qty: 1, Price: 18000})
 	rp.AddProduct(ipaymu.Product{Name: "Kaos", Qty: 2, Price: 60000})

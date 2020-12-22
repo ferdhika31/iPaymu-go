@@ -8,3 +8,14 @@ type Product struct {
 }
 
 type Products []Product
+
+func NewProduct(name string, qty uint32, price uint32, desc string) Product {
+	// add validation cuy
+
+	return Product{
+		Name:        name,
+		Qty:         qty,
+		Price:       price,
+		Description: desc,
+	}
+}

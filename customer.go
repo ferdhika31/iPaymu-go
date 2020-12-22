@@ -5,3 +5,11 @@ type Customer struct {
 	Phone string
 	Email string
 }
+
+func NewCustomer(name string, phone string, email string) Customer {
+	return Customer{
+		Name:  name,
+		Phone: phone,
+		Email: email,
+	}
+}
