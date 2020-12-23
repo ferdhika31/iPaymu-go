@@ -1,32 +1,12 @@
 package consts
 
-type PaymentMethodType int8
+type PaymentMethodType string
 
 const (
-	_ PaymentMethodType = iota
-
-	VA
-	BankTransfer
-	ConvenienceStore
-	COD
-	PayLater
-	QRIS
+	VA               PaymentMethodType = "va"
+	BankTransfer     PaymentMethodType = "banktransfer"
+	ConvenienceStore PaymentMethodType = "cstore"
+	COD              PaymentMethodType = "cod"
+	PayLater         PaymentMethodType = "paylater"
+	QRIS             PaymentMethodType = "qris"
 )
-
-var typeStr = map[PaymentMethodType]string{
-	VA:               "va",
-	BankTransfer:     "banktransfer",
-	ConvenienceStore: "cstore",
-	COD:              "cod",
-	PayLater:         "paylater",
-	QRIS:             "qris",
-}
-
-func (pct PaymentMethodType) String() string {
-	for idx, ts := range typeStr {
-		if idx == pct {
-			return ts
-		}
-	}
-	return "null"
-}

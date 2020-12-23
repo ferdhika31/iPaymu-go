@@ -3,7 +3,6 @@ package ipaymu
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"log"
 )
 
@@ -11,14 +10,7 @@ import (
 func (p *Payment) RedirectPayment(rr *RedirectRequest) (Response, error) {
 	req := make(map[string]interface{})
 
-	// req = structs.Map(rr)
-	if rr.PaymentMethod != 0 {
-		req["paymentMethod"] = fmt.Sprintf("%s", rr.PaymentMethod)
-	}
-
-	if rr.ReferenceID != "" {
-		req["referenceId"] = fmt.Sprintf("%s", rr.ReferenceID)
-	}
+	req, _ = structToMap(rr)
 
 	// set buyer info
 	req["buyerName"] = p.Customer.Name
