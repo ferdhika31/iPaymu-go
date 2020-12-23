@@ -91,3 +91,7 @@ res, _ := b.GetBalance()
 trx := ipaymu.Transaction{Config: cfg}
 res, _ := trx.GetTransaction(id)
 ```
+
+## Contributing
+
+For any requests, bugs, or comments, please open an [issue](https://github.com/ferdhika31/iPaymu-go/issues) or [submit a pull request](https://github.com/ferdhika31/iPaymu-go/pulls).
