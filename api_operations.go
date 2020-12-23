@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/ferdhika31/iPaymu-go/consts"
 )
 
 func GenerateSignature(body string, method string, cfg Config) string {
@@ -25,7 +27,7 @@ func GenerateSignature(body string, method string, cfg Config) string {
 func Call(method string, url string, body io.Reader, cfg Config) (Response, error) {
 
 	var API_URL = "https://my.ipaymu.com"
-	if strings.ToLower(cfg.Env) == "sandbox" {
+	if cfg.Env == consts.Sandbox {
 		API_URL = "http://sandbox.ipaymu.com"
 	}
 	var getURL = API_URL + url

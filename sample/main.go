@@ -13,6 +13,7 @@ var VA = "1179003821708289"
 
 func redirPayment() {
 	var cfg = ipaymu.NewConfig()
+	cfg.Env = cnstipay.Sandbox
 	cfg.ApiSecret = API_SECRET
 	cfg.VirtualAccount = VA
 	cfg.NotifyUrl = "http://localhost:8000/notify"
@@ -45,6 +46,7 @@ func redirPayment() {
 
 func getBalance() {
 	var cfg = ipaymu.NewConfig()
+	cfg.Env = cnstipay.Sandbox
 	cfg.ApiSecret = API_SECRET
 
 	b := ipaymu.Balance{Config: cfg}
@@ -61,6 +63,7 @@ func getBalance() {
 
 func getTransaction(id uint32) {
 	var cfg = ipaymu.NewConfig()
+	cfg.Env = cnstipay.Sandbox
 	cfg.ApiSecret = API_SECRET
 
 	b := ipaymu.Transaction{Config: cfg}
@@ -78,5 +81,5 @@ func getTransaction(id uint32) {
 func main() {
 	redirPayment()
 	getBalance()
-	getTransaction(321)
+	getTransaction(30029)
 }

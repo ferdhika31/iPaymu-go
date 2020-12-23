@@ -1,7 +1,9 @@
 package ipaymu
 
+import "github.com/ferdhika31/iPaymu-go/consts"
+
 type Config struct {
-	Env            string
+	Env            consts.EnvType
 	ApiSecret      string
 	VirtualAccount string
 	NotifyUrl      string
@@ -11,6 +13,6 @@ type Config struct {
 
 func NewConfig() Config {
 	return Config{
-		Env: "Sandbox",
+		Env: consts.Production,
 	}
 }
