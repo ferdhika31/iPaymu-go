@@ -1,9 +1,9 @@
 package ipaymu
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -22,7 +22,7 @@ func GenerateSignature(body string, method string, cfg Config) string {
 	return StringHMACSha256(stringToSign, secret)
 }
 
-func Request(method string, url string, body map[string]interface{}, cfg Config) map[string]interface{} {
+func Call(method string, url string, body io.Reader, cfg Config) (Response, error) {
 
 	var API_URL = "https://my.ipaymu.com"
 	if strings.ToLower(cfg.Env) == "sandbox" {
@@ -30,21 +30,14 @@ func Request(method string, url string, body map[string]interface{}, cfg Config)
 	}
 	var getURL = API_URL + url
 
-	var jsonBody []byte
-	jsonBody, err := json.Marshal(body)
-
-	if err != nil {
-		log.Println(err)
-	}
-
-	req, _ := http.NewRequest(method, getURL,
-		bytes.NewBuffer([]byte(string(jsonBody))))
+	req, _ := http.NewRequest(method, getURL, body)
 
 	t := time.Now()
 	timestamp := fmt.Sprintf("%d%02d%02d%02d%02d%02d",
 		t.Year(), t.Month(), t.Day(),
 		t.Hour(), t.Minute(), t.Second())
 
+	jsonBody := fmt.Sprintf("%s", body)
 	signature := fmt.Sprintf("%s", GenerateSignature(string(jsonBody), method, cfg))
 
 	// fmt.Println("Signature : " + signature)
@@ -69,7 +62,7 @@ func Request(method string, url string, body map[string]interface{}, cfg Config)
 		log.Printf("Failed reading the request body: %s\n", err)
 	}
 
-	var data map[string]interface{}
+	data := Response{}
 
 	err = json.Unmarshal(b, &data)
 
@@ -77,5 +70,5 @@ func Request(method string, url string, body map[string]interface{}, cfg Config)
 		log.Printf("Failed unmarshaling: %s\n", err)
 	}
 
-	return data
+	return data, nil
 }

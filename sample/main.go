@@ -17,21 +17,22 @@ func redirPayment() {
 	cfg.NotifyUrl = "http://localhost:8000/notify"
 	cfg.ReturnUrl = "http://localhost:8000/return"
 	cfg.CancelUrl = "http://localhost:8000/cancel"
-	rp := ipaymu.RedirectPayment{Config: cfg}
+
+	var payment = ipaymu.Payment{Config: cfg}
 	// optional
 	var c = ipaymu.NewCustomer("Ferdhika", "08313213131", "fer@dika.web.id")
-	rp.SetCustomer(c)
+	payment.SetCustomer(c)
 	// mandatory
-	rp.AddProduct(ipaymu.Product{Name: "Pot Kayu", Qty: 1, Price: 18000})
-	rp.AddProduct(ipaymu.Product{Name: "Kaos", Qty: 2, Price: 60000})
+	payment.AddProduct(ipaymu.Product{Name: "Pot Kayu", Qty: 1, Price: 18000})
+	payment.AddProduct(ipaymu.Product{Name: "Kaos", Qty: 2, Price: 60000})
 
-	// optional
-	payload := map[string]interface{}{
-		"referenceId":   "TRX0031",
-		"paymentMethod": "qris",
-	}
+	res, _ := payment.RedirectPayment(&ipaymu.RedirectRequest{
+		// optional
+		ReferenceID:   "TRX0031",
+		PaymentMethod: ipaymu.VA,
+	})
 
-	res := rp.Create(payload)
+	// res, _ := payment.RedirectPayment(&ipaymu.RedirectRequest{})
 
 	jsonString, err := json.Marshal(res)
 	if err != nil {

@@ -1,58 +1,67 @@
 package ipaymu
 
-type RedirectPayment struct {
-	Config   Config
-	Products []Product
-	Customer Customer
-}
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"log"
+)
 
-func (rp *RedirectPayment) SetCustomer(c Customer) Customer {
-	rp.Customer = c
-	return rp.Customer
-}
+// create redirect payment
+func (p *Payment) RedirectPayment(rr *RedirectRequest) (Response, error) {
+	req := make(map[string]interface{})
 
-func (rp *RedirectPayment) AddProduct(p Product) []Product {
-	rp.Products = append(rp.Products, p)
-	return rp.Products
-}
+	// req = structs.Map(rr)
+	if rr.PaymentMethod != 0 {
+		req["paymentMethod"] = fmt.Sprintf("%s", rr.PaymentMethod)
+	}
 
-func (rp *RedirectPayment) Create(body map[string]interface{}) map[string]interface{} {
+	if rr.ReferenceID != "" {
+		req["referenceId"] = fmt.Sprintf("%s", rr.ReferenceID)
+	}
 
 	// set buyer info
-	body["buyerName"] = rp.Customer.Name
-	body["buyerEmail"] = rp.Customer.Email
-	body["buyerPhone"] = rp.Customer.Phone
+	req["buyerName"] = p.Customer.Name
+	req["buyerEmail"] = p.Customer.Email
+	req["buyerPhone"] = p.Customer.Phone
 
 	// set notifyUrl
-	if rp.Config.NotifyUrl != "" {
-		body["notifyUrl"] = rp.Config.NotifyUrl
+	if p.Config.NotifyUrl != "" {
+		req["notifyUrl"] = p.Config.NotifyUrl
 	}
 	// set cancelUrl
-	if rp.Config.CancelUrl != "" {
-		body["cancelUrl"] = rp.Config.CancelUrl
+	if p.Config.CancelUrl != "" {
+		req["cancelUrl"] = p.Config.CancelUrl
 	}
 	// set returnUrl
-	if rp.Config.ReturnUrl != "" {
-		body["returnUrl"] = rp.Config.ReturnUrl
+	if p.Config.ReturnUrl != "" {
+		req["returnUrl"] = p.Config.ReturnUrl
 	}
 
+	// set product list
 	var products = []string{}
 	var qtys = []uint32{}
 	var prices = []uint32{}
+	for _, prod := range p.Products {
+		products = append(products, prod.Name)
+		qtys = append(qtys, prod.Qty)
+		prices = append(prices, prod.Price)
+	}
+	req["product"] = products
+	req["qty"] = qtys
+	req["price"] = prices
 
-	for _, p := range rp.Products {
-		products = append(products, p.Name)
-		qtys = append(qtys, p.Qty)
-		prices = append(prices, p.Price)
+	var jsonBody []byte
+
+	jsonBody, err := json.Marshal(req)
+
+	if err != nil {
+		log.Println(err)
 	}
 
-	body["product"] = products
-	body["qty"] = qtys
-	body["price"] = prices
+	// log.Println("Request Body : " + req)
 
-	// fmt.Print(body)
+	result, err := Call("POST", "/api/v2/payment", bytes.NewBuffer(jsonBody), p.Config)
 
-	res := Request("POST", "/api/v2/payment", body, rp.Config)
-
-	return res
+	return result, err
 }
