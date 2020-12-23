@@ -1,4 +1,4 @@
-package ipaymu
+package consts
 
 type PaymentMethodType int8
 
