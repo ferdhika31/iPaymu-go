@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	ipaymu "github.com/ferdhika31/iPaymu-go"
+	cnstipay "github.com/ferdhika31/iPaymu-go/consts"
 )
 
 var API_SECRET = "387AF695-EE0B-47BD-91A4-ADF55261159D"
@@ -29,7 +30,7 @@ func redirPayment() {
 	res, _ := payment.RedirectPayment(&ipaymu.RedirectRequest{
 		// optional
 		ReferenceID:   "TRX0031",
-		PaymentMethod: ipaymu.VA,
+		PaymentMethod: cnstipay.VA,
 	})
 
 	// res, _ := payment.RedirectPayment(&ipaymu.RedirectRequest{})
@@ -58,7 +59,24 @@ func getBalance() {
 	fmt.Println(string(jsonString))
 }
 
+func getTransaction(id uint32) {
+	var cfg = ipaymu.NewConfig()
+	cfg.ApiSecret = API_SECRET
+
+	b := ipaymu.Transaction{Config: cfg}
+
+	res := b.GetTransaction(id)
+
+	jsonString, err := json.Marshal(res)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	fmt.Println(string(jsonString))
+}
+
 func main() {
 	redirPayment()
 	getBalance()
+	getTransaction(321)
 }

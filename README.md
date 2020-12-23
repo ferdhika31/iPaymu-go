@@ -12,7 +12,7 @@ For the API documentation, please check [iPaymu API Documentation](https://ipaym
 - [x] Redirect Payment
 - [ ] Direct Payment
 - [x] Get Balance Account
-- [ ] Detail Transaction
+- [x] Detail Transaction
 
 ## To-do
 - [ ] Clean Code
