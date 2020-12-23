@@ -21,8 +21,6 @@ For the API documentation, please check [iPaymu API Documentation](https://ipaym
 
 ## Installation
 
-You need `go` installed. Once that is done, run the command:
-
 ```bash
 go get -u github.com/ferdhika31/iPaymu-go
 ```
