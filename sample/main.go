@@ -51,7 +51,7 @@ func getBalance() {
 
 	b := ipaymu.Balance{Config: cfg}
 
-	res := b.GetBalance()
+	res, _ := b.GetBalance()
 
 	jsonString, err := json.Marshal(res)
 	if err != nil {
@@ -66,9 +66,9 @@ func getTransaction(id uint32) {
 	cfg.Env = cnstipay.Sandbox
 	cfg.ApiSecret = API_SECRET
 
-	b := ipaymu.Transaction{Config: cfg}
+	t := ipaymu.Transaction{Config: cfg}
 
-	res := b.GetTransaction(id)
+	res, _ := t.GetTransaction(id)
 
 	jsonString, err := json.Marshal(res)
 	if err != nil {
