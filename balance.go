@@ -4,9 +4,9 @@ type Balance struct {
 	Config Config
 }
 
-func (b *Balance) GetBalance() Response {
+func (b *Balance) GetBalance() (Response, error) {
 
 	res, _ := Call("GET", "/api/saldo?key="+b.Config.ApiSecret, nil, b.Config)
 
-	return res
+	return res, nil
 }
