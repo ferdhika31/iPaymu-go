@@ -14,6 +14,11 @@ For the API documentation, please check [iPaymu API Documentation](https://ipaym
 - [x] Get Balance Account
 - [ ] Detail Transaction
 
+## To-do
+- [ ] Clean Code
+- [ ] Testing
+- [ ] COD Feature in Direct and Redirect Payment
+
 ## Installation
 
 On Going 
